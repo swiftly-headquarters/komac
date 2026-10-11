@@ -1,0 +1,121 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  code?: string;
+  lang?: "tsx" | "ts" | "jsx" | "js" | "bash" | "css" | "json";
+  /** Renders a tab bar above the code, one snippet per tab (e.g. package managers). */
+  tabs?: { label: string; code: string }[];
+}
+
+const { code = "", lang = "tsx", tabs } = Astro.props;
+const snippets = tabs ?? [{ label: "", code }];
+---
+
+<div class:list={["not-prose code-block relative", tabs && "code-block-tabbed"]}>
+  {
+    tabs && (
+      <div role="tablist" class="code-block-tabs">
+        {tabs.map((tab, i) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={i === 0}
+            data-tab={i}
+            class="code-block-tab"
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    )
+  }
+  {
+    snippets.map((snippet, i) => (
+      <div role={tabs ? "tabpanel" : undefined} data-panel={i} hidden={tabs && i !== 0}>
+        <Code
+          code={snippet.code}
+          lang={lang}
+          themes={{
+            light: "github-light",
+            dark: "vesper"
+          }}
+          defaultColor={false}
+        />
+      </div>
+    ))
+  }
+  <button
+    type="button"
+    class="code-block-copy-btn"
+    aria-label="Copy code to clipboard"
+  >
+    <span class="code-block-copy-btn__icons">
+      <span class="code-block-copy-btn__icon code-block-copy-btn__icon--check" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+        </svg>
+      </span>
+      <span class="code-block-copy-btn__icon code-block-copy-btn__icon--copy" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"></path>
+        </svg>
+      </span>
+    </span>
+  </button>
+</div>
+
+<script>
+  // Delegated once per document, so it survives soft navigations.
+  document.addEventListener("click", (e) => {
+    const tab = (e.target as Element).closest<HTMLElement>(".code-block-tab");
+    const root = tab?.closest(".code-block");
+    if (!tab || !root) return;
+    root.querySelectorAll<HTMLElement>(".code-block-tab").forEach((t) =>
+      t.setAttribute("aria-selected", String(t === tab)),
+    );
+    root.querySelectorAll<HTMLElement>("[data-panel]").forEach((p) => {
+      p.hidden = p.dataset.panel !== tab.dataset.tab;
+    });
+  });
+</script>
+
+<style is:global>
+  .code-block-tabbed {
+    border: 1px solid var(--color-komachi-hairline);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .code-block-tabbed pre.astro-code {
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+  }
+  .code-block-tabs {
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--color-komachi-hairline);
+  }
+  .code-block-tab {
+    cursor: pointer;
+    height: 2.125rem; /* 34px; the copy button below is centered against this */
+    padding: 0;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color-komachi-subtle);
+  }
+  .code-block-tab:hover {
+    color: var(--text-color-komachi-strong);
+  }
+  .code-block-tab[aria-selected="true"] {
+    color: var(--text-color-komachi-strong);
+    border-bottom-color: currentColor;
+  }
+  /* Sit the copy button inside the tab bar instead of over the code: (34px - 26px) / 2 */
+  .code-block-tabbed .code-block-copy-btn {
+    top: 0.25rem;
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "CLI"
+description: "Add blocks and look up component docs straight from your terminal."
+---
+
+The Komachi CLI runs through npx, so there's nothing to install.
+
+```bash
+npx komachi help
+```
+
+## Installing a block
+
+Blocks are copy-paste compositions you own and can edit.
+
+```bash
+# Initialize komachi.json configuration
+npx komachi init
+
+# List all available blocks
+npx komachi blocks
+
+# Install a block to your project
+npx komachi add PageHeader
+```
+
+## Browsing components
+
+List what's available and pull up docs for any component without leaving the terminal.
+
+<div style="overflow-x: auto;">
+  <table>
+    <colgroup>
+      <col style="width: 24ch;" />
+      <col />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Command</th>
+        <th>What it does</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>npx komachi ls</code></td>
+        <td>Lists every component, grouped by category</td>
+      </tr>
+      <tr>
+        <td><code>npx komachi doc Button</code></td>
+        <td>Prints the props and usage for one component</td>
+      </tr>
+      <tr>
+        <td><code>npx komachi docs</code></td>
+        <td>Prints documentation for every component at once</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

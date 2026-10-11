@@ -1,0 +1,56 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: Accessibility
+description: Understand the accessibility features Komachi provides and what your app still needs to cover.
+---
+
+import Callout from "~/components/docs/Callout.astro";
+import { Input } from "komachi";
+
+Komachi treats accessibility as a core requirement. Its components sit on top of [Base UI](https://base-ui.com/react/overview/accessibility), which takes care of the hard parts: ARIA attributes, roles, pointer interactions, keyboard navigation, and focus management. You get an accessible experience by default, and simple APIs to adjust it.
+
+Below are the main accessibility features Komachi gives you, along with the areas where your own code has to fill in the gaps so everyone can use your application.
+
+## Keyboard Navigation
+
+Komachi components follow the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/), so basic keyboard support works out of the box. People who can't use a pointing device depend on this, and so do those who simply prefer a keyboard or another input method.
+
+Expect many components to respond to arrow keys, alphanumeric keys, <kbd>Home</kbd>, <kbd>End</kbd>, <kbd>Enter</kbd>, and <kbd>Esc</kbd>.
+
+## Focus Management
+
+After a user interaction, Komachi components move focus on their own. Some also expose props such as `initialFocus` and `finalFocus` so you can control where focus lands.
+
+Showing where focus is remains your job. Style the `:focus` or `:focus-visible` pseudo-classes to make it visible.
+
+<Callout type="info">
+  [WCAG describes how a focus indicator should look](https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html).
+</Callout>
+
+## Color Contrast
+
+Every foreground element you style needs enough contrast against its background.
+
+<Callout type="info">
+  If your project has no strict compliance requirements, consider following [APCA](https://www.myndex.com/APCA/), the contrast model expected to replace the current method in WCAG 3.
+</Callout>
+
+## Accessible Labels
+
+Components such as `Field`, `Input`, and `Checkbox` link form controls to their labels automatically. You can also pair a control with a native HTML `<label>` element.
+
+<div class="not-prose max-w-xs">
+  <Input label="Email address" placeholder="you@example.com" client:visible />
+</div>
+
+Tab to the field above and a screen reader announces "Email address" - the `label` prop wires it up, no manual `id`/`htmlFor` pairing needed.
+
+Custom controls need an accessible name from markup such as `alt`, `aria-label`, or `aria-labelledby`. [WAI-ARIA explains how to name custom controls](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/).
+
+## Testing
+
+Komachi builds on Base UI, whose components are tested across many browsers, devices, platforms, screen readers, and environments, so accessibility holds up in a wide range of user contexts.
+
+---
+
+To learn more about the accessibility features of Base UI, read its [accessibility documentation](https://base-ui.com/react/overview/accessibility).

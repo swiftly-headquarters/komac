@@ -1,0 +1,15 @@
+{
+  "name": "komachi-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter komachi-web codegen:demos && pnpm --filter @swiftlylabs/komachi codegen && pnpm --filter komachi-web dev",
+    "build": "pnpm --filter @swiftlylabs/komachi build && pnpm --filter komachi-web build",
+    "start": "pnpm --filter komachi-web exec astro preview --host 0.0.0.0 --port ${PORT:-3000}",
+    "test": "pnpm --filter @swiftlylabs/komachi test"
+  },
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": "^24.12.0"
+  }
+}

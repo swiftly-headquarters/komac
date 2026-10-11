@@ -1,0 +1,166 @@
+---
+import MainLayout from "./MainLayout.astro";
+import { StickyDocHeader } from "../components/docs/StickyDocHeader";
+import { CopyPageButton } from "../components/docs/CopyPageButton";
+import { BaseUIIcon } from "../components/docs/icons/BaseUIIcon";
+import { GithubLogoIcon } from "@phosphor-icons/react";
+import { TableOfContents } from "../components/docs/TableOfContents";
+import { DocTabs } from "../components/docs/DocTabs";
+
+interface Props {
+  title: string;
+  description: string;
+  baseUIComponent?: string;
+  /** Path to the source file in the komachi package (e.g., "components/button") - will link to GitHub */
+  sourceFile?: string;
+  headings?: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
+  /** Hide the table of contents (select bar + sidebar) for pages with no stable headings to jump to. */
+  hideToc?: boolean;
+}
+
+const {
+  title,
+  description,
+  baseUIComponent,
+  sourceFile,
+  headings = [],
+  hideToc = false,
+} = Astro.props;
+
+const isComponentPage = Astro.url.pathname.startsWith("/components/");
+
+const baseUIUrl = baseUIComponent
+  ? `https://base-ui.com/react/components/${baseUIComponent}`
+  : null;
+
+// Extract the component name from the path (e.g., "components/button" -> "button")
+// and construct the direct file URL (e.g., "components/button/button.tsx").
+// If sourceFile already has a file extension, use it as-is.
+const githubSourceUrl = sourceFile
+  ? (() => {
+      const base = `https://github.com/swiftly-headquarters/komachi/blob/main/packages/komachi/src/`;
+      if (/\.\w+$/.test(sourceFile)) {
+        return `${base}${sourceFile}`;
+      }
+      const componentName = sourceFile.split("/").pop();
+      return `${base}${sourceFile}/${componentName}.tsx`;
+    })()
+  : null;
+---
+
+<MainLayout title={`${title} - Komachi`} description={description}>
+  <div class="flex flex-col">
+    <StickyDocHeader
+      title={title}
+      githubSourceUrl={githubSourceUrl}
+      baseUIUrl={baseUIUrl}
+      client:load
+    />
+
+    <!-- Page Header -->
+    <div id="page-header" class="border-b border-komachi-hairline">
+      <div class="mx-auto">
+        <div class="mx-auto max-w-screen-2xl px-4 py-6 md:px-6 lg:p-12">
+          <!-- Mobile: Copy page button above title -->
+          <div class="mb-3 flex items-center gap-2 lg:hidden">
+            <CopyPageButton align="center" client:idle />
+            {
+            githubSourceUrl && (
+              <a
+                href={githubSourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex size-6.5 shrink-0 items-center justify-center rounded-lg bg-komachi-base text-komachi-default shadow-xs ring ring-komachi-line transition-colors hover:bg-komachi-tint hover:ring-komachi-edge-hover focus-visible:ring-2 focus-visible:ring-komachi-focus-ring focus-visible:outline-none"
+                title="View source on GitHub"
+                aria-label="View source on GitHub"
+              >
+                <GithubLogoIcon size={16} weight="fill" />
+              </a>
+            )
+            }
+          </div>
+          <div class="mb-3 flex items-center gap-3">
+            <h1 class="text-4xl font-semibold">{title}</h1>
+            {
+              baseUIUrl && (
+                <a
+                  href={baseUIUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-komachi-subtle transition-colors hover:text-komachi-strong"
+                  title="View Base UI documentation"
+                  aria-label="View Base UI documentation"
+                >
+                  <BaseUIIcon size={28} />
+                </a>
+              )
+            }
+            <!-- Desktop: source link + Copy page button on far right -->
+            <div class="hidden items-center gap-2 lg:ml-auto lg:flex">
+              {
+              githubSourceUrl && (
+                <a
+                  href={githubSourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex size-6.5 shrink-0 items-center justify-center rounded-lg bg-komachi-base text-komachi-default shadow-xs ring ring-komachi-line transition-colors hover:bg-komachi-tint hover:ring-komachi-edge-hover focus-visible:ring-2 focus-visible:ring-komachi-focus-ring focus-visible:outline-none"
+                  title="View source on GitHub"
+                  aria-label="View source on GitHub"
+                >
+                  <GithubLogoIcon size={16} weight="fill" />
+                </a>
+              )
+              }
+              <CopyPageButton client:idle />
+            </div>
+          </div>
+          <p class="text-lg text-komachi-strong leading-normal">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <main class="flex grow flex-col">
+      <div class="mx-auto w-full grow">
+        <!-- Select TOC: visible below xl, hidden at xl+ where sidebar takes over -->
+        {!hideToc && (
+          <div class="xl:hidden sticky top-0 z-1 border-b border-komachi-hairline bg-komachi-canvas">
+            <div class="mx-auto max-w-screen-2xl">
+              <TableOfContents layout="select" headings={headings.length > 0 ? headings : undefined} client:load />
+            </div>
+          </div>
+        )}
+
+        <div class="isolate mx-auto max-w-screen-2xl px-4 py-6 md:px-6 lg:p-12 lg:pr-10 lg:pb-28">
+          <div class:list={["grid grid-cols-1 gap-16", !hideToc && "xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-12"]}>
+            <div class="min-w-0">
+              {isComponentPage && <DocTabs client:load />}
+              <div
+                class:list={[
+                  "komachi-prose prose max-w-none min-w-0",
+                  isComponentPage && "doc-tabs-pending",
+                ]}
+              >
+                <slot />
+              </div>
+            </div>
+            <!-- Sidebar TOC: only at xl+ -->
+            {!hideToc && (
+              <aside class="hidden xl:block min-w-0">
+                <div class="sticky top-14">
+                  <TableOfContents headings={headings.length > 0 ? headings : undefined} client:load />
+                </div>
+              </aside>
+            )}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</MainLayout>

@@ -1,0 +1,113 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "Hold Button"
+description: "Requires a continuous press before an action can complete."
+sourceFile: "components/hold-button"
+---
+
+import ComponentExample from "~/components/docs/ComponentExample.astro";
+import ComponentSection from "~/components/docs/ComponentSection.astro";
+import CodeBlock from "~/components/docs/CodeBlock.astro";
+import PropsTable from "~/components/docs/PropsTable.astro";
+import {
+  HoldButtonEffectsDemo,
+  HoldButtonDurationsDemo,
+  HoldButtonVariantsDemo,
+  HoldButtonCancelDemo,
+} from "~/components/demos/HoldButtonDemo";
+
+<ComponentSection>
+  <ComponentExample demo="HoldButtonEffectsDemo" vrSection="effects" vrTitle="Effects">
+    <HoldButtonEffectsDemo client:load />
+  </ComponentExample>
+</ComponentSection>
+
+<ComponentSection>
+
+## Installation
+
+  <CodeBlock
+    code={`import { HoldButton } from "komachi/components/hold-button";`}
+    lang="tsx"
+  />
+</ComponentSection>
+
+<ComponentSection>
+
+## Usage
+
+Use `onHoldComplete` for the protected action. `HoldButton` suppresses ordinary
+click activation, so releasing early never runs the action.
+
+```tsx
+import { HoldButton } from "komachi";
+
+export default function Example() {
+  return (
+    <HoldButton
+      effect="fill"
+      holdDuration={1200}
+      onHoldComplete={() => deploy()}
+    >
+      Hold to deploy
+    </HoldButton>
+  );
+}
+```
+
+Pointer, touch, Space, and Enter holds use the same duration. Releasing, moving
+the pointer away, cancelling the pointer, or moving focus before completion
+resets progress and calls `onHoldCancel` when provided.
+
+</ComponentSection>
+
+<ComponentSection>
+
+## Examples
+
+### Effects
+
+Choose an effect that matches the action and available space. Every effect uses
+the same hold timer and reaches completion at the configured duration.
+
+<ComponentExample demo="HoldButtonEffectsDemo" vrSection="effects-all" vrTitle="All Effects">
+  <HoldButtonEffectsDemo client:load />
+</ComponentExample>
+
+### Durations
+
+Use a short duration for accidental-click protection and a longer duration for
+consequential actions. The default duration is `1200` milliseconds.
+
+<ComponentExample demo="HoldButtonDurationsDemo" vrSection="durations" vrTitle="Durations">
+  <HoldButtonDurationsDemo client:load />
+</ComponentExample>
+
+### Button Variants
+
+`HoldButton` supports Button variants, sizes, shapes, icons, loading state, and
+disabled state. Destructive variants automatically use the danger color for
+progress effects.
+
+<ComponentExample demo="HoldButtonVariantsDemo" vrSection="button-variants" vrTitle="Button Variants">
+  <HoldButtonVariantsDemo client:load />
+</ComponentExample>
+
+### Cancellation
+
+Use `onHoldCancel` when the interface should acknowledge an interrupted hold.
+Completion followed by release does not count as cancellation.
+
+<ComponentExample demo="HoldButtonCancelDemo" vrSection="cancellation" vrTitle="Cancellation">
+  <HoldButtonCancelDemo client:load />
+</ComponentExample>
+</ComponentSection>
+
+<ComponentSection>
+
+## API Reference
+
+  <PropsTable component="HoldButton" />
+</ComponentSection>
+
+{/* trigger-vr */}

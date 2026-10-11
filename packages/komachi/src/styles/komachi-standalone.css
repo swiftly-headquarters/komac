@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "./komachi-binding.css";
+
+/* 
+ * Komachi Standalone CSS
+ * This file will be compiled to standard CSS for non-Tailwind applications.
+ * It includes all Tailwind utilities and Komachi component styles.
+ */

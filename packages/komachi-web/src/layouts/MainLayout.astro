@@ -1,0 +1,32 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { Dock } from "../components/Dock";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+declare const __KOMACHI_VERSION__: string;
+
+const { title, description } = Astro.props;
+const currentPath = Astro.url.pathname;
+const komachiVersion =
+  typeof __KOMACHI_VERSION__ !== "undefined" ? __KOMACHI_VERSION__ : "dev";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="isolate">
+    <Dock
+      currentPath={currentPath}
+      version={komachiVersion}
+      client:load
+      transition:persist
+    />
+
+    <!-- Bottom padding keeps the last lines of every page clear of the dock. -->
+    <div id="main-content" class="main-content pb-24">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

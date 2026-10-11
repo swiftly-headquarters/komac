@@ -1,0 +1,216 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "Installation"
+description: "Install the Komachi package and start importing components into your app."
+---
+
+import Callout from "~/components/docs/Callout.astro";
+import CodeBlock from "~/components/docs/CodeBlock.astro";
+
+export const komachiVersion =
+  typeof __KOMACHI_VERSION__ !== "undefined" ? __KOMACHI_VERSION__ : "latest";
+
+Komachi is a single npm package. Install it, load its styles, and import components one at a time. The latest version is <code>v{komachiVersion}</code>.
+
+This page covers the install, the style setup for apps with and without Tailwind CSS, and the two ways to bring components into your code: package exports and CLI blocks.
+
+## Install the Package
+
+`komachi` lives on the public npm registry, so you don't need any extra configuration.
+
+<CodeBlock
+  lang="bash"
+  tabs={[
+    { label: "npm", code: "npm install komachi" },
+    { label: "pnpm", code: "pnpm add komachi" },
+    { label: "yarn", code: "yarn add komachi" },
+  ]}
+/>
+
+Komachi depends on the packages below as peers. Most React projects already include them:
+
+<CodeBlock
+  lang="bash"
+  tabs={[
+    { label: "npm", code: "npm install react react-dom @phosphor-icons/react" },
+    { label: "pnpm", code: "pnpm add react react-dom @phosphor-icons/react" },
+    { label: "yarn", code: "yarn add react react-dom @phosphor-icons/react" },
+  ]}
+/>
+
+## Adding Styles
+
+Komachi ships its CSS in two forms. Pick the one that fits your setup.
+
+### With Tailwind CSS
+
+If your app uses Tailwind CSS, point Tailwind at Komachi's source files and import the styles. Put Komachi's styles before `@import "tailwindcss"` so its theme tokens are registered first.
+
+```css
+/* app.css or main.css */
+@source "../node_modules/komachi/dist/**/*.{js,jsx,ts,tsx}";
+@import "komachi/styles/tailwind";
+@import "tailwindcss";
+
+/* Your custom styles */
+```
+
+<Callout type="warning">
+  Tailwind CSS v4 skips `node_modules/` when scanning for classes. Without the
+  `@source` directive, components may render with missing styles, for example
+  Dialogs that aren't centered.
+</Callout>
+
+<Callout type="info">
+  The `@source` path is resolved from your CSS file. A file in `src/styles/` may
+  need `../../node_modules/komachi/dist/**/*.{"{"}js,jsx,ts,tsx{"}"}`. The default
+  export `komachi/styles` is the same as `komachi/styles/tailwind`.
+</Callout>
+
+### Without Tailwind CSS
+
+If your app doesn't use Tailwind CSS, load the standalone build. It already contains every compiled style, so no Tailwind setup is needed.
+
+```tsx
+// In your app entry point (e.g., main.tsx, index.tsx)
+import "komachi/styles/standalone";
+```
+
+## Isolating Your App Root
+
+Komachi's floating components (`Select`, `Combobox`, `Dropdown`, `Popover`, `Tooltip`, `Dialog`, and others) render their popups through a portal at the end of `document.body`. Komachi sets no `z-index` on these popups, so a positive `z-index` in your own layout, such as a sticky header, can end up painted over an open popup.
+
+Avoid this by adding `isolation: isolate` to the element that wraps your app, as [Base UI recommends](https://base-ui.com/react/overview/quick-start#portals):
+
+```css
+/* The element that wraps your entire app, e.g. #root or #app */
+.root {
+  isolation: isolate;
+}
+```
+
+Or with Tailwind:
+
+```tsx
+<div id="root" className="isolate">
+  {/* Your app */}
+</div>
+```
+
+Your app's content now has its own stacking context, so portaled popups always render on top, whatever `z-index` values your layout uses. Don't put it on `<body>`: that would place the portals in the same stacking context and undo the effect.
+
+<Callout type="info">
+  Needing `z-index` to push a Komachi popup above your own UI usually points to a
+  problem elsewhere. Isolate the app root rather than raising the popup's
+  `z-index` or targeting Base UI's internal data attributes.
+</Callout>
+
+## Importing Components
+
+Import from the package root, or from a per-component entry point when you want the smallest bundle through tree-shaking.
+
+```tsx
+import { Button, Input, Dialog } from "komachi";
+import { Slider } from "komachi/components/slider";
+```
+
+Here is a complete example with Tailwind CSS:
+
+```css
+/* app.css */
+@source "../node_modules/komachi/dist/**/*.{js,jsx,ts,tsx}";
+@import "komachi/styles/tailwind";
+@import "tailwindcss";
+```
+
+```tsx
+// App.tsx
+import { Button, Input, LayerCard } from "komachi";
+import "./app.css";
+
+export default function App() {
+  return (
+    <LayerCard className="rounded-lg p-6">
+      <h1 className="mb-4 text-2xl font-bold">Welcome to Komachi</h1>
+      <Input placeholder="Enter your name..." className="mb-4" />
+      <Button variant="primary">Submit</Button>
+    </LayerCard>
+  );
+}
+```
+
+## Blocks
+
+Blocks are higher-level compositions, such as `PageHeader` and `ResourceListPage`, that you add through the Komachi CLI. The code is copied into your project, so you own it and can change it however you like. The CLI rewrites relative imports to `komachi` so everything keeps working together.
+
+```bash
+# Initialize Komachi configuration
+npx komachi init
+
+# List available blocks
+npx komachi blocks
+
+# Install a block
+npx komachi add PageHeader
+```
+
+Installed blocks live inside your project, for example in `src/components/komachi/`:
+
+```tsx
+import { PageHeader } from "src/components/komachi/page-header/page-header";
+```
+
+<Callout type="info">
+  Choose blocks when you need to customize beyond props, want full control over
+  the implementation, are building application-specific layouts, or prefer
+  copy-paste over a package dependency. Otherwise use package components: they
+  are versioned, tree-shakeable, and update with the package.
+</Callout>
+
+## Base UI Primitives
+
+Komachi is built on [Base UI](https://base-ui.com), a collection of unstyled, accessible React components. When you need the underlying primitives for advanced cases, Komachi re-exports all 37 of them, each through its own import path.
+
+```tsx
+import { Popover } from "komachi/primitives/popover";
+import { Slider } from "komachi/primitives/slider";
+import { Accordion } from "komachi/primitives/accordion";
+```
+
+Importing primitives one at a time keeps bundles smaller, since only what you use is included.
+
+<Callout type="warning">
+  Reach for the styled Komachi components first. Use primitives to build custom
+  components Komachi doesn't offer yet, or when you need fine-grained control
+  over styling and behavior.
+</Callout>
+
+The 37 primitives, by group:
+
+- **Layout:** Accordion, Collapsible, Separator, ScrollArea, Toolbar
+- **Overlays:** AlertDialog, Dialog, Popover, PreviewCard, Tooltip, Toast
+- **Menus:** Menu, Menubar, ContextMenu, NavigationMenu
+- **Form controls:** Autocomplete, Button, Checkbox, CheckboxGroup, Combobox, Input, NumberField, Radio, RadioGroup, Select, Slider, Switch, Toggle, ToggleGroup
+- **Form structure:** Field, Fieldset, Form
+- **Display:** Avatar, Meter, Progress, Tabs
+
+## Utilities
+
+Komachi also exports helpers for common tasks:
+
+```tsx
+import { cn, safeRandomId, LinkProvider } from "komachi";
+
+// Merge class names with Tailwind
+const className = cn("base-class", condition && "conditional-class");
+
+// Generate safe random IDs
+const id = safeRandomId();
+
+// Configure the link component for your framework (maps href to your router)
+<LinkProvider component={YourAppLink}>{/* Your app */}</LinkProvider>;
+```
+
+---
+
+Ready to build? Browse the [components](/components/button) or read how [components and blocks](/components-vs-blocks) differ.

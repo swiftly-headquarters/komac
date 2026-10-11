@@ -1,0 +1,225 @@
+---
+import DocLayout from "../../layouts/DocLayout.astro";
+import Heading from "../../components/docs/Heading.astro";
+import ComponentSection from "../../components/docs/ComponentSection.astro";
+import ComponentExample from "../../components/docs/ComponentExample.astro";
+import CodeBlock from "../../components/docs/CodeBlock.astro";
+import PropsTable from "../../components/docs/PropsTable.astro";
+import {
+  BubbleMapBasicDemo,
+  BubbleMapProbesDemo,
+} from "~/components/demos/Chart/BubbleMapDemo";
+import { ChoroplethMapBasicDemo } from "~/components/demos/Chart/ChoroplethMapDemo";
+import { GlobeMapProbesDemo } from "~/components/demos/Chart/GlobeMapDemo";
+import type { MapGeoJson } from "komachi";
+
+const WORLD_GEO_JSON_URL =
+  "https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json";
+
+let geoJson: MapGeoJson | null = null;
+
+try {
+  const response = await fetch(WORLD_GEO_JSON_URL);
+  if (response.ok) {
+    geoJson = (await response.json()) as MapGeoJson;
+  } else {
+    console.warn(
+      `Failed to fetch BubbleMap GeoJSON: ${response.status} ${response.statusText}`,
+    );
+  }
+} catch (error) {
+  console.warn("Failed to fetch BubbleMap GeoJSON", error);
+  geoJson = null;
+}
+---
+
+<DocLayout
+  title="Maps"
+  description="Map chart components for visualizing geographic data with GeoJSON."
+  sourceFile="components/chart"
+>
+  <ComponentSection>
+    <ComponentExample code={`const probes = [
+  { city: "San Francisco", lat: 37.77, lon: -122.42 },
+  { city: "London", lat: 51.51, lon: -0.13 },
+  { city: "Singapore", lat: 1.35, lon: 103.82 },
+  // ...more regions
+];
+
+<BubbleMap
+  echarts={echarts}
+  geoJson={geoJson}
+  data={probes}
+  lng="lon"
+  lat="lat"
+  name="city"
+  value={() => 1}
+  minRadius={8}
+  maxRadius={8}
+  tooltipFormatter={(row) => "<strong>" + row.city + "</strong>"}
+/>`}>
+      <BubbleMapProbesDemo geoJson={geoJson} client:visible />
+    </ComponentExample>
+  </ComponentSection>
+
+  <ComponentSection>
+    <Heading level={2}>Installation</Heading>
+    <p class="mb-4 text-komachi-subtle">
+      <code class="text-komachi-default">BubbleMap</code> and <code class="text-komachi-default">ChoroplethMap</code> require <code class="text-komachi-default">echarts</code> as a peer dependency. <code class="text-komachi-default">GlobeMap</code> renders a built-in Natural Earth land mask directly to SVG and does not use WebGL or require ECharts. Planar map consumers provide GeoJSON; map components do not fetch map data or use map tiles.
+    </p>
+    <CodeBlock code={`npm install echarts`} lang="bash" />
+
+    <CodeBlock
+      code={`import { BubbleMap, ChoroplethMap, GlobeMap } from "komachi/components/chart";`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <ComponentSection>
+    <Heading level={2}>Usage</Heading>
+    <CodeBlock
+      code={`import { BubbleMap, ChoroplethMap, type MapGeoJson } from "komachi";
+import * as echarts from "echarts/core";
+import { MapChart, ScatterChart } from "echarts/charts";
+import { TooltipComponent, VisualMapComponent } from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
+
+echarts.use([
+  MapChart,
+  ScatterChart,
+  TooltipComponent,
+  VisualMapComponent,
+  CanvasRenderer,
+]);
+
+// Load GeoJSON in your app and pass it to map components.
+const geoJson = world as MapGeoJson;
+
+const deliveries = [
+  { city: "San Francisco", lat: 37.77, lon: -122.42, notifications: 1200 },
+  { city: "London", lat: 51.5, lon: -0.12, notifications: 1500 },
+];
+
+const countries = [
+  { country: "United States of America", notifications: 4200 },
+  { country: "Germany", notifications: 3100 },
+];
+
+export default function Example() {
+  return (
+    <>
+      <BubbleMap
+        echarts={echarts}
+        geoJson={geoJson}
+        data={deliveries}
+        lng="lon"
+        lat="lat"
+        name="city"
+        value="notifications"
+      />
+
+      <ChoroplethMap
+        echarts={echarts}
+        geoJson={geoJson}
+        data={countries}
+        name="country"
+        value="notifications"
+      />
+    </>
+  );
+}`}
+      lang="tsx"
+    />
+  </ComponentSection>
+
+  <ComponentSection>
+    <Heading level={2} class="mb-6">Examples</Heading>
+
+    <div class="space-y-8">
+      <div>
+        <Heading level={3}>Bubble Map</Heading>
+        <p class="mb-4 text-komachi-subtle">
+          Plot raw rows by longitude and latitude. The <code class="text-komachi-default">value</code> accessor controls proportional bubble size.
+        </p>
+        <ComponentExample code={`<BubbleMap
+  echarts={echarts}
+  geoJson={geoJson}
+  data={deliveries}
+  lng="lon"
+  lat="lat"
+  name="city"
+  value="notifications"
+  minRadius={8}
+/>`}>
+          <BubbleMapBasicDemo geoJson={geoJson} client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <Heading level={3}>Choropleth Map</Heading>
+        <p class="mb-4 text-komachi-subtle">
+          Shade regions by value. Data rows are joined to GeoJSON features by <code class="text-komachi-default">name</code> (matched against the feature's <code class="text-komachi-default">nameProperty</code>, default <code class="text-komachi-default">"name"</code>).
+        </p>
+        <ComponentExample code={`<ChoroplethMap
+  echarts={echarts}
+  geoJson={geoJson}
+  data={countries}
+  name="country"
+  value="notifications"
+/>`}>
+          <ChoroplethMapBasicDemo geoJson={geoJson} client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <Heading level={3}>Status probes</Heading>
+        <p class="mb-4 text-komachi-subtle">
+          Plot geographic markers without WebGL. Land is drawn as a quiet dot grid on a transparent ocean, with markers that fade at the horizon. Set <code class="text-komachi-default">landStyle="hatched"</code> for diagonal lines instead, or add <code class="text-komachi-default">showGraticule</code> for latitude and longitude guides. These illustrative probes are example data.
+        </p>
+        <ComponentExample code={`<GlobeMap
+  markers={probes}
+  landColor="var(--text-color-komachi-inactive)"
+  landHatchSpacing={8}
+  oceanColor="transparent"
+  markerColor="var(--color-komachi-brand)"
+  markerRadius={8}
+  autoRotate
+/>`}>
+          <GlobeMapProbesDemo client:visible />
+        </ComponentExample>
+      </div>
+
+      <div>
+        <Heading level={3}>Custom Tooltips</Heading>
+        <p class="mb-4 text-komachi-subtle">
+          Provide <code class="text-komachi-default">tooltipFormatter</code> when the default name/value tooltip is not enough. The formatter returns HTML rendered by ECharts, so escape user-provided values.
+        </p>
+        <CodeBlock
+          code={`<BubbleMap
+  echarts={echarts}
+  geoJson={geoJson}
+  data={deliveries}
+  lng="lon"
+  lat="lat"
+  name="city"
+  value="notifications"
+  tooltipFormatter={(row) =>
+    "<strong>" + row.city + "</strong><br />" + row.notifications.toLocaleString()
+  }
+/>`}
+          lang="tsx"
+        />
+      </div>
+    </div>
+  </ComponentSection>
+
+  <ComponentSection>
+    <Heading level={2}>API Reference</Heading>
+    <Heading level={3} class="mb-2 mt-4 text-lg">BubbleMap</Heading>
+    <PropsTable component="BubbleMap" />
+    <Heading level={3} class="mb-2 mt-6 text-lg">ChoroplethMap</Heading>
+    <PropsTable component="ChoroplethMap" />
+    <Heading level={3} class="mb-2 mt-6 text-lg">GlobeMap</Heading>
+    <PropsTable component="GlobeMap" />
+  </ComponentSection>
+</DocLayout>

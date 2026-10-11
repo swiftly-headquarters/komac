@@ -1,0 +1,69 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "Component Registry"
+description: "Component metadata that LLMs and code generation tools can read, and a block registry you can install from a URL."
+---
+
+import Callout from "~/components/docs/Callout.astro";
+import CodeBlock from "~/components/docs/CodeBlock.astro";
+import { ComponentRegistryView } from "~/components/demos/RegistryDemo";
+
+Komachi publishes two registries. Both are generated from the source, so they stay in step with the code.
+
+- The **component registry** is a JSON file that describes every component: its props, variants, examples, and semantic tokens. AI agents, code generators, and other tools can read it directly.
+- The **block registry** follows the [shadcn registry format](https://ui.shadcn.com/docs/registry), so tools that speak it can install a block, source and dependencies included, straight from a URL.
+
+## Component Registry
+
+Read the registry from the CLI or over HTTP. You can also [open the JSON API](/api/component-registry) in your browser.
+
+<CodeBlock
+  lang="bash"
+  tabs={[
+    {
+      label: "CLI",
+      code: `# List all components
+npx komachi ls
+
+# Get docs for a specific component
+npx komachi doc Button`,
+    },
+    {
+      label: "HTTP",
+      code: "curl https://komachi-ui.com/api/component-registry",
+    },
+  ]}
+/>
+
+Each entry contains the component's props with their types and defaults, variant options with descriptions, working code examples taken from stories, the semantic color tokens in use, and sub-components for compound patterns.
+
+<ComponentRegistryView client:load />
+
+## Block Registry
+
+Blocks are higher-level compositions such as `PageHeader`. Fetch the index to see what is available, or hand a block's URL to the shadcn CLI to add it to your project.
+
+<CodeBlock
+  lang="bash"
+  tabs={[
+    {
+      label: "Index",
+      code: "curl https://komachi-ui.com/r/index.json",
+    },
+    {
+      label: "Install",
+      code: "npx shadcn@latest add https://komachi-ui.com/r/page-header.json",
+    },
+  ]}
+/>
+
+The blocks are `delete-resource`, `page-header`, and `resource-list`. Imports in each file already point at `komachi`, the same as `npx komachi add`.
+
+<Callout type="info">
+  The block registry covers blocks only. Components ship in the `komachi`
+  package, so install that first. See [Installation](/installation).
+</Callout>
+
+---
+
+To learn how blocks differ from components, read [Components vs Blocks](/components-vs-blocks).

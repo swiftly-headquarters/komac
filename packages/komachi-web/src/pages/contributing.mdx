@@ -1,0 +1,201 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "Contributing"
+description: "How to contribute to Komachi: setup, development workflow, quality checks, pull requests, and releases are all covered here."
+---
+
+## Before You Start
+
+Agree on the approach before writing code for anything beyond a small change:
+
+- Comment on an existing issue, or open a new one.
+- Settle the scope, API direction, and migration impact.
+- Small fixes and docs tweaks can go directly to a PR.
+
+---
+
+## 1. One-Time Setup
+
+Run from the repo root:
+
+```bash
+pnpm install
+pnpm build
+```
+
+Requirements:
+
+- Node `^24.12.0`
+- pnpm `>=10.26.0`
+
+Suggested local setup:
+
+- Manage Node versions with a tool like `nvm` or `fnm`.
+- Use VS Code with the workspace TypeScript version selected.
+- Re-run `pnpm install` if dependencies changed after a rebase.
+
+### Repository Access and Branching
+
+Internal contributors usually clone and push straight to `swiftly-headquarters/komachi`:
+
+```bash
+git clone https://github.com/swiftly-headquarters/komachi.git
+git switch -c <branch-name>
+git push -u origin <branch-name>
+```
+
+Without write access, reach out to your manager or the Komachi maintainers.
+
+---
+
+## 2. Decide What Kind of Change It Is
+
+Use this list to find where your change belongs:
+
+- **Component**: a reusable UI primitive in `packages/komachi/src/components/`
+- **Block**: an installable composition pattern in `packages/komachi/src/blocks/`
+- **Docs only**: docs, demo, or navigation updates in `packages/komachi-web/`
+
+To add a new **component**, generate it with the scaffold instead of creating files by hand:
+
+```bash
+pnpm --filter komachi new:component
+```
+
+---
+
+## 3. Start the Dev Loop
+
+Use two separate terminals:
+
+```bash
+# Terminal 1: watch Komachi package output
+pnpm --filter komachi dev
+
+# Terminal 2: docs site
+pnpm dev
+```
+
+This lets you check your change quickly in the real docs environment.
+
+---
+
+## 4. Make the Change
+
+A typical internal change goes like this:
+
+1. Build the feature in `packages/komachi/src/...`.
+2. Add or update demos in `packages/komachi-web/src/components/demos/`.
+3. Add or update tests in `packages/komachi`.
+4. Add or update docs pages in `packages/komachi-web/src/pages/`.
+
+For demos to show up in the registry metadata, name them exactly:
+
+- File: `{Component}Demo.tsx`
+- Export names must end with `Demo`
+
+What we expect from an implementation:
+
+- Keep accessibility semantics and keyboard behavior intact.
+- Keep APIs focused and skip one-off abstractions.
+- Follow the existing Komachi patterns for variants, props, and structure.
+
+---
+
+## 5. Validate Before Opening a PR
+
+From the repo root, run these before you open or update a PR:
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm --filter komachi test
+```
+
+When you changed exports or build behavior, also run:
+
+```bash
+pnpm --filter komachi build
+```
+
+Optional, when relevant:
+
+```bash
+pnpm format
+pnpm --filter komachi test:run
+```
+
+Windsurf and hooks catch some extra problems, but still run the checks locally before asking for review.
+
+---
+
+## 6. Add a Changeset When Needed
+
+If your change touches `packages/komachi/` and should be released, add a changeset:
+
+```bash
+pnpm changeset
+```
+
+How to choose the bump:
+
+- `patch` for bug fixes and low-risk improvements.
+- `minor` for new, backward-compatible features.
+- `major` only for breaking changes.
+- Write the summary around what users will notice.
+
+Docs-only changes and package work that doesn't ship generally don't need a changeset.
+
+---
+
+## 7. Open and Maintain the PR
+
+- Branch from `main` and push to `origin`.
+- Title the PR `[package] short description` (for example, `[komachi] add meter warning variant`).
+- Complete the PR template, including how you tested and what it affects.
+- Once review begins, add follow-up commits rather than force-pushing rewritten history.
+
+Keeping git history tidy:
+
+- Make the commit history readable before the first review.
+- Don't rewrite commits that have already been reviewed.
+- Address feedback with follow-up commits (`fixup` commits are fine).
+
+A PR must be reviewed before it can merge.
+
+---
+
+## PR Previews and Tests
+
+- CI comments on each PR with `pkg.pr.new` links to prerelease builds.
+- Include tests with every PR that changes behavior.
+- Most Komachi tests use Vitest and sit under `packages/komachi`.
+
+---
+
+## Release Process (How Your Change Ships)
+
+- Changesets drive releases.
+- Changesets merged into `main` feed the automated versioning and publish flow.
+- For an urgent release outside the normal cadence, contact the maintainers.
+
+---
+
+## Practical Guidelines
+
+- Use semantic Komachi tokens instead of raw Tailwind color classes.
+- Build class names with `cn(...)`.
+- Extend existing patterns before inventing a new API design.
+- Test behavior, not just rendering snapshots.
+
+Pitfalls to avoid:
+
+- Don't scaffold components by hand; use `new:component`.
+- Don't use raw Tailwind color classes (`bg-blue-500`, etc.).
+- Don't skip the changeset for releasable `packages/komachi` changes.
+
+---
+
+## Related Docs
+
+Document releasable library changes by following the [changeset guide](https://github.com/swiftly-headquarters/komachi/blob/main/.changeset/README.md), and read [AGENTS.md](https://github.com/swiftly-headquarters/komachi/blob/main/packages/komachi/AGENTS.md) for conventions and patterns.

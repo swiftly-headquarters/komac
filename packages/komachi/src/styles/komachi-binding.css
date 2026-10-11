@@ -1,0 +1,472 @@
+@import "./theme-komachi.css";
+
+@theme {
+  /* Primitive color definitions for Komachi theme */
+  --color-red-650: oklch(55% 0.238 27.4);
+  --color-red-750: oklch(46% 0.195 27.2);
+
+  --color-blue-400: oklch(70.7% 0.165 254.624);
+  --color-blue-800: oklch(42.4% 0.199 265.638);
+
+  --color-orange-650: oklch(81.5% 0.197 76);
+  --color-teal-650: oklch(54.9% 0.096 184.565);
+
+  --color-komachi-neutral-50: oklch(98.75% 0 0);
+  --color-komachi-neutral-75: oklch(98% 0 0);
+  --color-komachi-neutral-125: oklch(96.5% 0 0);
+  --color-komachi-neutral-450: oklch(89% 0 0);
+  /* Dark-mode scale: canvas/elevated nudged lighter (softer than full
+     black), recessed/base/tint/line nudged darker (more defined against
+     the lighter canvas) - same ordering, slightly tighter spread. */
+  --color-komachi-neutral-750: oklch(29% 0 0);
+  --color-komachi-neutral-850: oklch(22% 0 0);
+  --color-komachi-neutral-925: oklch(15.5% 0 0);
+  --color-komachi-neutral-950: oklch(14.5% 0 0);
+  --color-komachi-neutral-975: oklch(13.5% 0 0);
+  --color-komachi-neutral-1000: oklch(11.5% 0 0);
+}
+
+/* Typography is now generated in theme-komachi.css via codegen:themes */
+
+@theme {
+  /* Easings & transitions */
+  --ease-bounce: cubic-bezier(0.2, 0, 0, 1.5);
+  --default-transition-duration: 120ms;
+  --ease-komachi: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Radius scale: md = small, lg = control, xl = floating. Only xl changes. */
+  --radius-xl: 0.625rem;
+
+  /* Shadows, tuned to the tinted surfaces */
+  --shadow-xs: 0 1px 1px var(--color-komachi-shadow-drop);
+  --shadow-md:
+    0 1px 2px var(--color-komachi-shadow-drop),
+    0 4px 12px -4px var(--color-komachi-shadow-drop);
+  --shadow-lg:
+    0 1px 2px var(--color-komachi-shadow-drop),
+    0 8px 24px -8px var(--color-komachi-shadow-drop);
+  --shadow-xl:
+    0 2px 4px var(--color-komachi-shadow-drop),
+    0 24px 48px -12px var(--color-komachi-shadow-drop);
+
+  /* Animation */
+  --animate-chip-in: chip-in 150ms var(--ease-komachi) both;
+  --animate-chip-out: chip-out 150ms var(--ease-komachi) both;
+  --animate-value-in: value-in 150ms var(--ease-komachi) both;
+  --animate-refresh: refresh 0.5s ease-in-out infinite;
+  --animate-right: right 15s linear infinite;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  [data-mode="dark"] {
+    color-scheme: dark;
+  }
+
+  /*
+   * Motion baseline: interactive controls ease their paint-only state changes.
+   * Zero specificity (:where) so any component or utility transition wins.
+   */
+  :where(
+    button,
+    input,
+    textarea,
+    select,
+    a[href],
+    [role="switch"],
+    [role="checkbox"],
+    [role="radio"],
+    [role="tab"],
+    [role="menuitem"],
+    [role="option"]
+  ) {
+    transition-property:
+      color, background-color, border-color, box-shadow, opacity;
+    transition-duration: var(--default-transition-duration);
+    transition-timing-function: var(--ease-komachi);
+  }
+
+  /* Reduced motion: collapse every Komachi transition and animation. */
+  @media (prefers-reduced-motion: reduce) {
+    :where(
+        [data-komachi-component],
+        [data-komachi-component] *,
+        [data-komachi-part],
+        [data-starting-style],
+        [data-ending-style]
+      ),
+    :where(button, input, textarea, select, a[href]) {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* "spinner" = up and down arrows on number inputs */
+  .no-input-spinner {
+    appearance: textfield;
+
+    ::-webkit-outer-spin-button,
+    ::-webkit-inner-spin-button {
+      appearance: none;
+    }
+  }
+
+  /* Link current variant decoration - different opacities for light/dark */
+  .link-current {
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+  }
+
+  [data-mode="dark"] .link-current {
+    text-decoration-color: color-mix(in oklch, currentColor 65%, transparent);
+  }
+
+  .link-current:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* External link icon stroke width - thicker in dark mode for visibility */
+  .link-external-icon {
+    stroke-width: 1.75;
+  }
+
+  [data-mode="dark"] .link-external-icon {
+    stroke-width: 2;
+  }
+}
+
+@keyframes right {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.float {
+  animation: float 5s linear infinite alternate;
+}
+
+@keyframes float {
+  to {
+    transform: translate(5px, 15px);
+  }
+}
+
+@keyframes refresh {
+  to {
+    transform: rotate(360deg) scale(0.9);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.4s ease-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Chart loading skeleton: the wave stays static while the shimmer moves. */
+.komachi-chart-shimmer {
+  animation: shimmer 1.8s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .komachi-chart-shimmer {
+    animation: none;
+    transform: none;
+  }
+}
+
+@keyframes toast-bump {
+  0% {
+    transform: scale(1);
+  }
+
+  20% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-toast-bump {
+  animation: toast-bump 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+/* Subtle bump for small anchored clipboard "Copied" toasts */
+@keyframes clipboard-toast-bump {
+  0% {
+    transform: scale(1);
+  }
+
+  35% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-clipboard-toast-bump {
+  animation: clipboard-toast-bump 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-clipboard-toast-bump {
+    animation: none;
+  }
+}
+
+@keyframes komachi-hold-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes komachi-hold-ring {
+  from {
+    stroke-dashoffset: 100;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes komachi-hold-glow {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.komachi-hold-fill-progress {
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: color-mix(in oklch, var(--komachi-hold-color) 32%, transparent);
+}
+
+.komachi-hold-fill-progress[data-hold-state="holding"] {
+  animation-name: komachi-hold-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.komachi-hold-fill-progress[data-hold-state="complete"] {
+  transform: scaleX(1);
+}
+
+.komachi-hold-ring-progress {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.komachi-hold-ring-progress[data-hold-state="holding"] {
+  animation-name: komachi-hold-ring;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.komachi-hold-ring-progress[data-hold-state="complete"] {
+  stroke-dashoffset: 0;
+}
+
+.komachi-hold-glow-progress {
+  opacity: 0;
+  transform: scale(0.94);
+  background: color-mix(in oklch, var(--komachi-hold-color) 14%, transparent);
+  box-shadow:
+    inset 0 0 0 1px
+      color-mix(in oklch, var(--komachi-hold-color) 50%, transparent),
+    0 0 16px color-mix(in oklch, var(--komachi-hold-color) 40%, transparent);
+}
+
+.komachi-hold-glow-progress[data-hold-state="holding"] {
+  animation-name: komachi-hold-glow;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.komachi-hold-glow-progress[data-hold-state="complete"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@layer base {
+  .skeleton-line {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    height: 0.5rem;
+    width: var(--skeleton-width);
+    background-color: #f3f4f6;
+    /* neutral-100 for light mode */
+  }
+
+  .skeleton-line::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    animation: shimmer var(--shimmer-duration, 1.5s) var(--shimmer-delay, 0s)
+      infinite ease-in-out;
+    content: "";
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  [data-mode="dark"] .skeleton-line {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  [data-mode="dark"] .skeleton-line::after {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+/* Scroll-fade: gradient masks that appear on the edges of a horizontally
+   scrollable container based on scroll position. Uses scroll-driven
+   animations (Chrome 115+, Edge 115+). Degrades gracefully to no fade.
+   Activated by the `data-overflowing` attribute (set via JS ResizeObserver). */
+@property --fade-left-n {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --fade-right-n {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes scroll-fade-x-left {
+  from {
+    --fade-left-n: 0;
+  }
+  to {
+    --fade-left-n: 1;
+  }
+}
+
+@keyframes scroll-fade-x-right {
+  from {
+    --fade-right-n: 1;
+  }
+  to {
+    --fade-right-n: 0;
+  }
+}
+
+[data-overflowing] {
+  @supports (animation-timeline: scroll()) {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      white calc(var(--fade-left-n) * var(--scroll-fade-width, 3rem)),
+      white calc(100% - var(--fade-right-n) * var(--scroll-fade-width, 3rem)),
+      transparent
+    );
+
+    animation-name: scroll-fade-x-left, scroll-fade-x-right;
+    animation-timing-function: linear, linear;
+    animation-timeline: scroll(self x);
+    animation-range:
+      0 var(--scroll-fade-range, 3rem),
+      calc(100% - var(--scroll-fade-range, 3rem)) 100%;
+    animation-fill-mode: both;
+  }
+}
+
+/* Tab list scroll behavior. Scrollbar is only hidden when scroll-driven
+   animations are supported (the fade replaces it as the affordance).
+   Unsupported browsers keep the native scrollbar. */
+.komachi-tabs-list {
+  overscroll-behavior-x: contain;
+}
+
+@supports (animation-timeline: scroll()) {
+  .komachi-tabs-list {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .komachi-tabs-list::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Popup outline offset - in dark mode, offset inward to align with inner stroke.
+   This compensates for the different geometry of inner vs outer stroke paths.
+   Used by: Tooltip, Popover
+   See: https://base-ui.com/react/components/tooltip */
+[data-mode="dark"] .komachi-tooltip-popup,
+[data-mode="dark"] .komachi-popover-popup {
+  outline-offset: -1px;
+}
+
+/* Input placeholder color - vanilla CSS to avoid Tailwind parsing issues */
+.komachi-input-placeholder::placeholder {
+  color: var(--text-color-komachi-placeholder);
+}

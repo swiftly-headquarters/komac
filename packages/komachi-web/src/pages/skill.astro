@@ -1,0 +1,38 @@
+---
+import { parseInline } from "marked";
+import Callout from "~/components/docs/Callout.astro";
+import CodeBlock from "~/components/docs/CodeBlock.astro";
+import { DesignTips } from "~/components/skill/DesignTips";
+import { designTips } from "~/components/skill/design-tips";
+import DocLayout from "~/layouts/DocLayout.astro";
+
+const renderedTips = designTips.map(({ title, description }) => ({
+  title: parseInline(title, { async: false }),
+  ...(description
+    ? { description: parseInline(description, { async: false }) }
+    : {}),
+}));
+---
+
+<DocLayout
+  title="Design skill"
+  description="SwiftlyLabs product design guidelines to follow when you build or review Komachi interfaces."
+  hideToc
+>
+  <div class="not-prose grid gap-16">
+    <DesignTips client:load renderedTips={renderedTips} />
+  </div>
+
+  <section class="not-prose mt-20">
+    <Callout type="info">
+      <p class="text-base font-medium text-komachi-strong">Add the skill</p>
+      <p class="mt-1 text-base">
+        Install it once, then run it against any new or changed Komachi
+        interface to check it against the rules above.
+      </p>
+    </Callout>
+    <div class="mt-4">
+      <CodeBlock code="npx skills add swiftly-headquarters/komachi@komachi-design" lang="bash" />
+    </div>
+  </section>
+</DocLayout>

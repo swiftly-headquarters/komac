@@ -1,0 +1,362 @@
+@source "../../../komachi/dist/**/*.{js,jsx,ts,tsx}";
+@source "../../../komachi/src/**/*.{ts,tsx}";
+@import "komachi/styles";
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+@theme {
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent CLS from font loading */
+html {
+  scroll-behavior: smooth;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  font-feature-settings: "cv02", "cv03", "cv04", "calt";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Reset tracking for monospace/code elements and komachi component areas */
+pre,
+code,
+kbd,
+.font-mono {
+  letter-spacing: normal;
+}
+
+/* ==========================================================================
+   Komachi Prose - Tailwind Typography overrides using komachi semantic tokens
+   Used on .komachi-prose wrapper in DocLayout and MdxDocLayout
+   ========================================================================== */
+
+/* Motion gate: no animations until a demo has first been on screen. The
+   attribute is cleared once (see BaseLayout), so they start then and never
+   restart. */
+[data-motion-gate][data-offscreen],
+[data-motion-gate][data-offscreen] *,
+[data-motion-gate][data-offscreen] *::before,
+[data-motion-gate][data-offscreen] *::after {
+  animation: none !important;
+}
+
+.komachi-prose {
+  /* Body text */
+  --tw-prose-body: var(--text-color-komachi-default);
+  /* Headings */
+  --tw-prose-headings: var(--text-color-komachi-default);
+  /* Lead paragraphs */
+  --tw-prose-lead: var(--text-color-komachi-default);
+  /* Link color */
+  --tw-prose-links: var(--text-color-komachi-link);
+  /* Bold text */
+  --tw-prose-bold: var(--text-color-komachi-strong);
+  /* List counters (ordered lists) */
+  --tw-prose-counters: var(--text-color-komachi-subtle);
+  /* Bullet markers */
+  --tw-prose-bullets: var(--text-color-komachi-default);
+  /* Horizontal rules */
+  --tw-prose-hr: var(--color-komachi-hairline);
+  /* Blockquote text */
+  --tw-prose-quotes: var(--text-color-komachi-default);
+  /* Blockquote left border */
+  --tw-prose-quote-borders: var(--color-komachi-hairline);
+  /* Figure captions */
+  --tw-prose-captions: var(--text-color-komachi-subtle);
+  /* Keyboard input */
+  --tw-prose-kbd: var(--text-color-komachi-default);
+  /* Keyboard shadow */
+  --tw-prose-kbd-shadows: transparent;
+  /* Inline code */
+  --tw-prose-code: var(--text-color-komachi-default);
+  /* Code inside pre blocks */
+  --tw-prose-pre-code: var(--text-color-komachi-default);
+  /* Pre block background */
+  --tw-prose-pre-bg: var(--color-komachi-canvas);
+  /* Table header borders */
+  --tw-prose-th-borders: var(--color-komachi-hairline);
+  /* Table cell borders */
+  --tw-prose-td-borders: var(--color-komachi-hairline);
+
+  /* Dark mode - same tokens, they auto-adapt via light-dark() */
+  --tw-prose-invert-body: var(--text-color-komachi-default);
+  --tw-prose-invert-headings: var(--text-color-komachi-default);
+  --tw-prose-invert-lead: var(--text-color-komachi-default);
+  --tw-prose-invert-links: var(--text-color-komachi-link);
+  --tw-prose-invert-bold: var(--text-color-komachi-strong);
+  --tw-prose-invert-counters: var(--text-color-komachi-subtle);
+  --tw-prose-invert-bullets: var(--text-color-komachi-default);
+  --tw-prose-invert-hr: var(--color-komachi-hairline);
+  --tw-prose-invert-quotes: var(--text-color-komachi-default);
+  --tw-prose-invert-quote-borders: var(--color-komachi-hairline);
+  --tw-prose-invert-captions: var(--text-color-komachi-subtle);
+  --tw-prose-invert-kbd: var(--text-color-komachi-default);
+  --tw-prose-invert-kbd-shadows: transparent;
+  --tw-prose-invert-code: var(--text-color-komachi-default);
+  --tw-prose-invert-pre-code: var(--text-color-komachi-default);
+  --tw-prose-invert-pre-bg: var(--color-komachi-canvas);
+  --tw-prose-invert-th-borders: var(--color-komachi-hairline);
+  --tw-prose-invert-td-borders: var(--color-komachi-hairline);
+}
+
+/* Reset prose styles inside not-prose wrappers */
+.komachi-prose .not-prose {
+  letter-spacing: normal;
+  line-height: normal;
+}
+
+/* Inline code styling - match existing site style */
+.komachi-prose :where(code):not(:where(pre code)) {
+  font-weight: 500;
+  font-size: 0.875em;
+  background-color: var(--color-komachi-base);
+  border: 1px solid var(--color-komachi-hairline);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  letter-spacing: normal;
+}
+
+/* Remove backtick decoration from inline code */
+.komachi-prose :where(code):not(:where(pre code))::before,
+.komachi-prose :where(code):not(:where(pre code))::after {
+  content: none;
+}
+
+/* Links - underline on hover only (skip .not-prose where components control their own styles) */
+.komachi-prose :where(a):not(:where(.not-prose, .not-prose *)) {
+  text-decoration: none;
+}
+
+.komachi-prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+  text-decoration: underline;
+}
+
+/* Heading anchor links */
+.komachi-prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) a {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+/* Headings - shared spacing and tracking */
+.komachi-prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) {
+  @apply tracking-tight;
+  scroll-margin-top: 6rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Adjacent sibling spacing after headings */
+.komachi-prose :where(h2, h3, h4):not(:where(.not-prose, .not-prose *)) + * {
+  margin-top: 0;
+}
+
+/* Paragraphs */
+.komachi-prose :where(p):not(:where(.not-prose, .not-prose *)) {
+  @apply text-base leading-relaxed;
+}
+
+/* Adjacent sibling spacing between paragraphs */
+.komachi-prose :where(p + p):not(:where(.not-prose, .not-prose *)) {
+  margin-top: 0.75rem;
+}
+
+/* Unordered and ordered lists */
+.komachi-prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+  @apply text-base;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+/* List items */
+.komachi-prose :where(li):not(:where(.not-prose, .not-prose *)) {
+  @apply text-base leading-relaxed;
+}
+
+/* Horizontal rule */
+.komachi-prose :where(hr):not(:where(.not-prose, .not-prose *)) {
+  margin: 1.5rem 0;
+}
+
+/* kbd styling */
+.komachi-prose :where(kbd) {
+  background-color: var(--color-komachi-control);
+  border: 1px solid var(--color-komachi-hairline);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875em;
+  box-shadow: none;
+}
+
+/* Pre / code blocks - better defaults for rendered markdown <pre> without affecting CodeBlock (wrapped in .not-prose) or Shiki blocks (inline styles override) */
+.komachi-prose :where(pre):not(:where(.not-prose, .not-prose *)) {
+  @apply text-base;
+  background-color: var(--tw-prose-pre-bg);
+  border: 1px solid var(--color-komachi-hairline);
+  border-radius: 0.5rem;
+  letter-spacing: normal;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+}
+
+/* Table styling */
+.komachi-prose :where(table) {
+  width: 100%;
+}
+
+/* Table header border */
+.komachi-prose :where(thead) {
+  border-bottom-color: var(--color-komachi-hairline);
+}
+
+/* Table header cells */
+.komachi-prose :where(thead th) {
+  color: var(--text-color-komachi-strong);
+  font-weight: 600;
+}
+
+/* Blockquote */
+.komachi-prose :where(blockquote) {
+  border-left-color: var(--color-komachi-brand);
+  color: var(--text-color-komachi-default);
+  font-style: normal;
+}
+
+/* Non-prose sections inside prose (ComponentExample, Callout, etc.)
+   These opt out of prose styling via not-prose */
+.komachi-prose :where(.not-prose) {
+  /* Reset any inherited typography transforms */
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* ==========================================================================
+   Shiki code blocks - markdown code blocks use .astro-code class
+   Dual theme support: light (github-light) and dark (vesper)
+   ========================================================================== */
+
+/* Code block inside wrapper - extra right padding so text clears the copy button */
+.code-block .astro-code {
+  @apply text-sm;
+  padding: 0.875rem 2rem 0.875rem 1rem;
+  margin: 0;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+/* Container styling for standalone code blocks (not yet wrapped by JS) */
+pre.astro-code {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-komachi-hairline);
+  margin: 1rem 0;
+}
+
+/* Light mode (default) */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+}
+
+/* Dark mode - toggle via data-mode attribute */
+[data-mode="dark"] .astro-code,
+[data-mode="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* ==========================================================================
+   Code block copy button
+   ========================================================================== */
+
+.code-block-copy-btn {
+  @apply absolute top-3 right-3 flex size-6.5 cursor-pointer items-center justify-center rounded-md border-none shadow-none select-none focus-visible:ring-1;
+  background: var(--color-komachi-base);
+  color: var(--text-color-komachi-subtle);
+  --tw-ring-color: var(--color-komachi-hairline);
+
+  &:hover {
+    background: var(--color-komachi-tint);
+  }
+}
+
+/* Icon wrapper - relative + overflow-hidden for slide animation */
+.code-block-copy-btn__icons {
+  @apply relative size-4 overflow-hidden;
+}
+
+/* Both icons stacked absolutely */
+.code-block-copy-btn__icon {
+  @apply absolute inset-0 flex items-center justify-center;
+  transition:
+    transform 200ms,
+    opacity 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code-block-copy-btn__icon {
+    transition: none;
+  }
+}
+
+/* Check icon: hidden below by default, slides up when copied */
+.code-block-copy-btn__icon--check {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* Copy icon: visible by default, slides up when copied */
+.code-block-copy-btn__icon--copy {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Copied state */
+.code-block-copy-btn[data-copied] .code-block-copy-btn__icon--check {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.code-block-copy-btn[data-copied] .code-block-copy-btn__icon--copy {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+/* Keep toasts above the floating dock when the two would overlap. */
+@media (max-width: 999px) {
+  [role="region"][aria-label="Notifications"] {
+    bottom: 5rem !important;
+  }
+}
+
+/*
+ * Component pages: until the DocTabs island takes over, show only the Overview
+ * content so the first paint matches the default tab. Only when scripting is
+ * on, so no-JS visitors still see every section.
+ */
+@media (scripting: enabled) {
+  .komachi-prose.doc-tabs-pending > section:has(> h2#installation),
+  .komachi-prose.doc-tabs-pending > section:has(> h2#usage),
+  .komachi-prose.doc-tabs-pending > section:has(> h2#api-reference) {
+    display: none;
+  }
+}

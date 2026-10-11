@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+}
+
+const { title, description, href } = Astro.props;
+---
+
+<div class="rounded-lg border border-komachi-hairline bg-komachi-elevated">
+  <div class="p-4">
+    <div class="text-komachi-default">{title}</div>
+    <div class="mt-1 text-sm text-komachi-subtle">{description}</div>
+
+    <div class="mt-4">
+      <a
+        href={href}
+        class="inline-flex items-center justify-center rounded-md border border-komachi-hairline bg-komachi-control px-3 py-1.5 text-sm font-medium text-komachi-default transition-colors hover:bg-komachi-recessed"
+      >
+        Learn more
+      </a>
+    </div>
+  </div>
+
+  <div class="border-komachi-hairline border-t bg-komachi-base p-2">
+    <slot />
+  </div>
+</div>
