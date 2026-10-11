@@ -10,6 +10,11 @@
     "ui"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swiftly-headquarters/komachi.git",
+    "directory": "packages/komachi"
+  },
   "bin": {
     "komachi": "./bin/komachi.js"
   },
