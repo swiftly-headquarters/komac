@@ -29,13 +29,18 @@ const description =
             class="group/row flex flex-col w-full items-center h-full not-last:border-dashed not-last:border-x-0 not-last:border-t-0 not-last:border-b not-last:border-komachi-hairline"
           >
             <div
-              class="flex border-dashed border-x border-y-0 border-komachi-hairline items-center h-full p-8 @2xl:p-12 relative w-[calc(100%-2rem)] @2xl:w-[calc(100%-4rem)] max-w-5xl gap-6 @2xl:gap-4 @2xl:flex-row flex-col"
+              class="flex border-dashed border-x border-y-0 border-komachi-hairline items-center h-full p-8 @2xl:p-12 relative w-[calc(100%-2rem)] @2xl:w-[calc(100%-4rem)] max-w-5xl gap-8 flex-col justify-center"
             >
               <div
-                class="order-1 flex w-full flex-col gap-2 text-center @2xl:order-0 @2xl:gap-3 @2xl:text-left group-not-last/row:[&::before,&::after]:absolute group-not-last/row:[&::before,&::after]:-bottom-1 group-not-last/row:[&::before,&::after]:size-1.75 group-not-last/row:[&::before,&::after]:rounded-[1.5px] group-not-last/row:[&::before,&::after]:z-10 group-not-last/row:[&::before,&::after]:ring-1 group-not-last/row:[&::before,&::after]:ring-komachi-line group-not-last/row:[&::before,&::after]:bg-komachi-canvas group-not-last/row:[&::before,&::after]:content-[''] group-not-last/row:after:-left-1 group-not-last/row:before:-right-1"
+                class="order-1 flex w-full flex-col items-center gap-3 text-center group-not-last/row:[&::before,&::after]:absolute group-not-last/row:[&::before,&::after]:-bottom-1 group-not-last/row:[&::before,&::after]:size-1.75 group-not-last/row:[&::before,&::after]:rounded-[1.5px] group-not-last/row:[&::before,&::after]:z-10 group-not-last/row:[&::before,&::after]:ring-1 group-not-last/row:[&::before,&::after]:ring-komachi-line group-not-last/row:[&::before,&::after]:bg-komachi-canvas group-not-last/row:[&::before,&::after]:content-[''] group-not-last/row:after:-left-1 group-not-last/row:before:-right-1"
               >
+                <p
+                  class="font-mono text-sm tracking-widest text-komachi-brand"
+                >
+                  404
+                </p>
                 <h1
-                  class="text-2xl font-semibold text-komachi-default @2xl:text-3xl"
+                  class="text-2xl font-semibold text-komachi-default @2xl:text-4xl"
                 >
                   {title}
                 </h1>
@@ -44,9 +49,15 @@ const description =
                 >
                   {description}
                 </p>
+                <a
+                  class="mt-3 inline-flex h-9 items-center border border-dashed border-komachi-line px-4 text-sm font-medium text-komachi-default hover:bg-komachi-hairline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-komachi-brand"
+                  href="/"
+                >
+                  Back to home
+                </a>
               </div>
               <div
-                class="flex w-full items-center justify-center @2xl:justify-end"
+                class="flex w-full items-center justify-center"
               >
                 <button
                   aria-label="Reverse logo animation"

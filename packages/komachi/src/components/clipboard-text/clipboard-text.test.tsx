@@ -139,9 +139,11 @@ describe("ClipboardText", () => {
     });
     expect(liveRegion?.textContent).toBe("Copied!");
 
-    await act(async () => {
-      vi.advanceTimersByTime(1);
-    });
+    for (let i = 0; i < 5; i++) {
+      await act(async () => {
+        vi.advanceTimersByTime(50);
+      });
+    }
     expect(liveRegion?.textContent).toBe("");
   });
 

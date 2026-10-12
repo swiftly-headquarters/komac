@@ -280,7 +280,7 @@ export function DropdownLinkItemDemo() {
         </DropdownMenu.LinkItem>
         <DropdownMenu.Separator />
         <DropdownMenu.LinkItem
-          href="https://docs.swiftlylabs.net"
+          href="https://komachi.swiftlylabs.net"
           target="_blank"
           icon={ArrowSquareOutIcon}
         >

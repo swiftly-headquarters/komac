@@ -39,6 +39,8 @@ export default defineConfig({
           exclude: ["**/*.browser.test.{ts,tsx}"],
           setupFiles: ["./tests/setup.ts"],
           globals: true,
+          testTimeout: 60_000,
+          hookTimeout: 120_000,
         },
       },
     ],

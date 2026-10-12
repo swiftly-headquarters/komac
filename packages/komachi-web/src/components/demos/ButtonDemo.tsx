@@ -138,7 +138,7 @@ export function ButtonLinkAsButtonDemo() {
         Read Link docs
       </LinkButton>
       <LinkButton
-        href="https://docs.swiftlylabs.net"
+        href="https://komachi.swiftlylabs.net"
         variant="ghost"
         icon={ArrowSquareOutIcon}
         external

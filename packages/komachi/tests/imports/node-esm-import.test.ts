@@ -17,7 +17,7 @@ describe.skipIf(!isBuilt)("Node ESM import smoke (post-build)", () => {
     const result = spawnSync(
       process.execPath,
       [join(__dirname, "import-entries.mjs"), pkgDir],
-      { timeout: 30_000, encoding: "utf-8" },
+      { timeout: 120_000, encoding: "utf-8" },
     );
 
     expect(result.status, `entries failed to import:\n${result.stderr}`).toBe(

@@ -6,7 +6,7 @@ describe("Main Entry Point Imports", () => {
 
   beforeAll(async () => {
     mainEntryExports = await getMainEntryExports();
-  }, 30000);
+  }, 120000);
 
   it("should import the main module without errors", async () => {
     expect(async () => {

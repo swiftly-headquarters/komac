@@ -47,8 +47,8 @@ describe("markdown pages integration", () => {
     const content = readFileSync(llmsPath, "utf-8");
     expect(content).toContain("# Komachi");
     expect(content).toContain("This file is a curated index for LLMs");
-    expect(content).toContain("https://komachi-ui.com/installation.md");
-    expect(content).toContain("https://komachi-ui.com/components/button.md");
-    expect(content).toContain("https://komachi-ui.com/blocks/resource-list.md");
+    expect(content).toContain("https://komachi.swiftlylabs.net/installation.md");
+    expect(content).toContain("https://komachi.swiftlylabs.net/components/button.md");
+    expect(content).toContain("https://komachi.swiftlylabs.net/blocks/resource-list.md");
   });
 });

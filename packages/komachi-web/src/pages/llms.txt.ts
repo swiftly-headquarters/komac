@@ -3,7 +3,7 @@ import componentRegistry from "komachi/ai/component-registry.json";
 
 export const prerender = true;
 
-const SITE_URL = "https://komachi-ui.com";
+const SITE_URL = "https://komachi.swiftlylabs.net";
 
 const componentDocPages = import.meta.glob("./components/*.{astro,mdx}");
 const blockDocPages = import.meta.glob("./blocks/*.{astro,mdx}");

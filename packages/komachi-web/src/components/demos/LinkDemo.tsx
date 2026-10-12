@@ -68,7 +68,7 @@ export function LinkRenderDemo() {
       <Link
         render={
           <CustomRouterLink
-            href="https://docs.swiftlylabs.net"
+            href="https://komachi.swiftlylabs.net"
             target="_blank"
             rel="noopener noreferrer"
           />
