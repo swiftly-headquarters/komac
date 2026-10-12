@@ -16,14 +16,14 @@ This page covers the install, the style setup for apps with and without Tailwind
 
 ## Install the Package
 
-`komachi` lives on the public npm registry, so you don't need any extra configuration.
+Komachi is published to the public npm registry as `@swiftlylabs/komachi`, so you don't need any extra configuration. The commands below install it under the shorter name `komachi`, so the imports on this site work as written.
 
 <CodeBlock
   lang="bash"
   tabs={[
-    { label: "npm", code: "npm install komachi" },
-    { label: "pnpm", code: "pnpm add komachi" },
-    { label: "yarn", code: "yarn add komachi" },
+    { label: "npm", code: "npm install komachi@npm:@swiftlylabs/komachi" },
+    { label: "pnpm", code: "pnpm add komachi@npm:@swiftlylabs/komachi" },
+    { label: "yarn", code: "yarn add komachi@npm:@swiftlylabs/komachi" },
   ]}
 />
 
@@ -145,13 +145,13 @@ Blocks are higher-level compositions, such as `PageHeader` and `ResourceListPage
 
 ```bash
 # Initialize Komachi configuration
-npx komachi init
+npx @swiftlylabs/komachi init
 
 # List available blocks
-npx komachi blocks
+npx @swiftlylabs/komachi blocks
 
 # Install a block
-npx komachi add PageHeader
+npx @swiftlylabs/komachi add PageHeader
 ```
 
 Installed blocks live inside your project, for example in `src/components/komachi/`:

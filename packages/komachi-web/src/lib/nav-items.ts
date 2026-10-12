@@ -77,8 +77,8 @@ const chartItems: NavItem[] = [
 ];
 
 // Blocks are CLI-installed components that you own and can customize
-// Use `npx komachi blocks` to see available blocks
-// Use `npx komachi add <block>` to install
+// Use `npx @swiftlylabs/komachi blocks` to see available blocks
+// Use `npx @swiftlylabs/komachi add <block>` to install
 const blockItems: NavItem[] = [
   { label: "Page Header", href: "/blocks/page-header" },
   { label: "Resource List", href: "/blocks/resource-list" },

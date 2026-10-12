@@ -20,7 +20,7 @@
  * - **Other:** Label, Link
  *
  * **Blocks** (composite page-level components) are NOT exported here.
- * Install them via the CLI: `npx komachi add <block-name>`.
+ * Install them via the CLI: `npx @swiftlylabs/komachi add <block-name>`.
  *
  * **AI resources:** See `komachi/ai/component-registry.json` for full
  * component metadata including prop descriptions, variant values, and examples.

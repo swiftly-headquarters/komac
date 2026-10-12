@@ -29,7 +29,7 @@ export function ClipboardTextLongDemo() {
 export function ClipboardTextWithTooltipDemo() {
   return (
     <ClipboardText
-      text="npx komachi add button"
+      text="npx @swiftlylabs/komachi add button"
       tooltip={{ text: "Copy", copiedText: "Copied!", side: "top" }}
     />
   );

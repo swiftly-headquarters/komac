@@ -1867,7 +1867,7 @@ Read-only text field with a one-click copy-to-clipboard button.
 
 ```tsx
 <ClipboardText
-      text="npx komachi add button"
+      text="npx @swiftlylabs/komachi add button"
       tooltip={{ text: "Copy", copiedText: "Copied!", side: "top" }}
     />
 ```
@@ -3983,7 +3983,7 @@ Placeholder shown when a list, table, or page has no content to display.
       icon={<PackageIcon size={48} />}
       title="No packages found"
       description="Get started by installing your first package."
-      commandLine="npm install komachi"
+      commandLine="npm install @swiftlylabs/komachi"
       contents={
         <div className="flex items-center gap-2">
           <Button icon={<CodeIcon />}>See examples</Button>

@@ -82,7 +82,7 @@ When Komachi releases breaking changes to token names, use this command
 to get the rename map for updating your codebase.
 
 USAGE:
-  npx komachi migrate [options]
+  npx @swiftlylabs/komachi migrate [options]
 
 OPTIONS:
   --json         Output machine-readable JSON (default)
@@ -92,16 +92,16 @@ OPTIONS:
 
 EXAMPLES:
   # Check if there are pending migrations
-  npx komachi migrate
+  npx @swiftlylabs/komachi migrate
 
   # Get class-level mapping for sed/find-replace
-  npx komachi migrate --classes
+  npx @swiftlylabs/komachi migrate --classes
 
   # Get JSON for custom codemod
-  npx komachi migrate --json > rename-map.json
+  npx @swiftlylabs/komachi migrate --json > rename-map.json
 
 USING WITH sed:
-  npx komachi migrate --classes | grep "^bg-\\|^text-" | \\
+  npx @swiftlylabs/komachi migrate --classes | grep "^bg-\\|^text-" | \\
     while IFS= read -r line; do
       old=$(echo "$line" | awk '{print $1}')
       new=$(echo "$line" | awk '{print $3}')

@@ -23,9 +23,9 @@ pnpm add react react-dom @phosphor-icons/react
 Komachi includes a built-in CLI for quick component reference:
 
 ```bash
-npx komachi ls         # List all components
-npx komachi doc Button # Get component documentation
-npx komachi docs       # Get all component docs
+npx @swiftlylabs/komachi ls         # List all components
+npx @swiftlylabs/komachi doc Button # Get component documentation
+npx @swiftlylabs/komachi docs       # Get all component docs
 ```
 
 The CLI reads from `ai/component-registry.json` (generated from TypeScript types + demo examples).
@@ -329,10 +329,10 @@ When a beta is published, the PR will include a comment with installation instru
 
 ```bash
 # Install the specific beta version
-npm install komachi@0.1.0-beta.a1b2c3d
+npm install @swiftlylabs/komachi@0.1.0-beta.a1b2c3d
 
 # Or with pnpm
-pnpm add komachi@0.1.0-beta.a1b2c3d
+pnpm add @swiftlylabs/komachi@0.1.0-beta.a1b2c3d
 ```
 
 ### Testing Beta Releases

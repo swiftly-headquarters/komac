@@ -85,7 +85,7 @@ export type ClipboardTextSize = KomachiClipboardTextSize;
  * @example
  * ```tsx
  * <ClipboardText text="sk_live_abc123" />
- * <ClipboardText text="npm install komachi" size="sm" />
+ * <ClipboardText text="npm install @swiftlylabs/komachi" size="sm" />
  * ```
  */
 export interface ClipboardTextProps extends KomachiClipboardTextVariantsProps {

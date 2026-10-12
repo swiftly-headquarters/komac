@@ -2,7 +2,7 @@ import { Surface, Code } from "komachi";
 import { DatabaseIcon } from "@phosphor-icons/react";
 
 // Note: In a real project, ResourceListPage would be installed via CLI
-// npx komachi add ResourceListPage
+// npx @swiftlylabs/komachi add ResourceListPage
 // For this demo, we're using a simplified inline version
 
 interface ResourceListPageProps {

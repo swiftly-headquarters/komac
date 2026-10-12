@@ -715,7 +715,7 @@ export function HomeGrid() {
     {
       name: "ClipboardText",
       id: "clipboard-text",
-      Component: <ClipboardText text="npx komachi add button" />,
+      Component: <ClipboardText text="npx @swiftlylabs/komachi add button" />,
     },
     {
       name: "CommandPalette",

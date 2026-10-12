@@ -23,10 +23,10 @@ Read the registry from the CLI or over HTTP. You can also [open the JSON API](/a
     {
       label: "CLI",
       code: `# List all components
-npx komachi ls
+npx @swiftlylabs/komachi ls
 
 # Get docs for a specific component
-npx komachi doc Button`,
+npx @swiftlylabs/komachi doc Button`,
     },
     {
       label: "HTTP",
@@ -57,7 +57,7 @@ Blocks are higher-level compositions such as `PageHeader`. Fetch the index to se
   ]}
 />
 
-The blocks are `delete-resource`, `page-header`, and `resource-list`. Imports in each file already point at `komachi`, the same as `npx komachi add`.
+The blocks are `delete-resource`, `page-header`, and `resource-list`. Imports in each file already point at `komachi`, the same as `npx @swiftlylabs/komachi add`.
 
 <Callout type="info">
   The block registry covers blocks only. Components ship in the `komachi`

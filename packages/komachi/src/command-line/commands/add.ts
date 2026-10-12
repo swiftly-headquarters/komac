@@ -242,7 +242,7 @@ export async function add(blockName: string | undefined): Promise<void> {
       console.log(`  - ${dep} (from komachi)`);
     }
     console.log("\nMake sure komachi is installed in your project:");
-    console.log("  pnpm add komachi");
+    console.log("  pnpm add @swiftlylabs/komachi");
   }
 
   // Show import path

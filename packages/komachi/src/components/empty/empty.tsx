@@ -63,7 +63,7 @@ export function emptyVariants({
  *   icon={<PackageIcon size={48} />}
  *   title="No packages found"
  *   description="Get started by installing your first package."
- *   commandLine="npm install komachi"
+ *   commandLine="npm install @swiftlylabs/komachi"
  * />
  * ```
  */

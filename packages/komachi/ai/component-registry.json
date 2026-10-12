@@ -1385,9 +1385,9 @@
         "<ClipboardText text=\"0c239dd2\" />",
         "<ClipboardText text=\"abc123\" />",
         "<ClipboardText text=\"sk_live_51H8...\" />",
-        "<ClipboardText\r\n      text=\"sk_live_***********\"\r\n      textToCopy=\"sk_live_51H8_abc123\"\r\n    />",
+        "<ClipboardText\n      text=\"sk_live_***********\"\n      textToCopy=\"sk_live_51H8_abc123\"\n    />",
         "<ClipboardText text=\"https://example.com/very/long/url/path\" />",
-        "<ClipboardText\r\n      text=\"npx komachi add button\"\r\n      tooltip={{ text: \"Copy\", copiedText: \"Copied!\", side: \"top\" }}\r\n    />"
+        "<ClipboardText\n      text=\"npx @swiftlylabs/komachi add button\"\n      tooltip={{ text: \"Copy\", copiedText: \"Copied!\", side: \"top\" }}\n    />"
       ],
       "colors": [
         "bg-komachi-base",
@@ -2627,12 +2627,12 @@
         }
       },
       "examples": [
-        "<Empty\r\n      icon={<PackageIcon size={48} />}\r\n      title=\"No packages found\"\r\n      description=\"Get started by installing your first package.\"\r\n      commandLine=\"npm install komachi\"\r\n      contents={\r\n        <div className=\"flex items-center gap-2\">\r\n          <Button icon={<CodeIcon />}>See examples</Button>\r\n          <Button icon={<GlobeIcon />} variant=\"primary\">\r\n            View documentation\r\n          </Button>\r\n        </div>\r\n      }\r\n    />",
-        "<div className=\"flex flex-col gap-8\">\r\n      <div>\r\n        <p className=\"mb-2 text-sm text-komachi-subtle\">Small</p>\r\n        <Empty\r\n          size=\"sm\"\r\n          icon={<Database size={32} className=\"text-komachi-inactive\" />}\r\n          title=\"No data available\"\r\n          description=\"There is no data to display.\"\r\n        />\r\n      </div>\r\n      <div>\r\n        <p className=\"mb-2 text-sm text-komachi-subtle\">Base</p>\r\n        <Empty\r\n          size=\"base\"\r\n          icon={<Database size={48} className=\"text-komachi-inactive\" />}\r\n          title=\"No data available\"\r\n          description=\"There is no data to display.\"\r\n        />\r\n      </div>\r\n      <div>\r\n        <p className=\"mb-2 text-sm text-komachi-subtle\">Large</p>\r\n        <Empty\r\n          size=\"lg\"\r\n          icon={<Database size={64} className=\"text-komachi-inactive\" />}\r\n          title=\"No data available\"\r\n          description=\"There is no data to display.\"\r\n        />\r\n      </div>\r\n    </div>",
-        "<Empty\r\n      icon={<FolderOpen size={48} className=\"text-komachi-inactive\" />}\r\n      title=\"No projects found\"\r\n      description=\"Get started by creating your first project using the command below.\"\r\n      commandLine=\"npm create komachi-project\"\r\n    />",
-        "<Empty\r\n      icon={<CloudSlash size={48} className=\"text-komachi-inactive\" />}\r\n      title=\"No connection\"\r\n      description=\"Unable to connect to the server. Please check your connection and try again.\"\r\n      contents={\r\n        <div className=\"flex gap-2\">\r\n          <Button variant=\"primary\">Retry</Button>\r\n          <Button variant=\"secondary\">Go Back</Button>\r\n        </div>\r\n      }\r\n    />",
+        "<Empty\n      icon={<PackageIcon size={48} />}\n      title=\"No packages found\"\n      description=\"Get started by installing your first package.\"\n      commandLine=\"npm install @swiftlylabs/komachi\"\n      contents={\n        <div className=\"flex items-center gap-2\">\n          <Button icon={<CodeIcon />}>See examples</Button>\n          <Button icon={<GlobeIcon />} variant=\"primary\">\n            View documentation\n          </Button>\n        </div>\n      }\n    />",
+        "<div className=\"flex flex-col gap-8\">\n      <div>\n        <p className=\"mb-2 text-sm text-komachi-subtle\">Small</p>\n        <Empty\n          size=\"sm\"\n          icon={<Database size={32} className=\"text-komachi-inactive\" />}\n          title=\"No data available\"\n          description=\"There is no data to display.\"\n        />\n      </div>\n      <div>\n        <p className=\"mb-2 text-sm text-komachi-subtle\">Base</p>\n        <Empty\n          size=\"base\"\n          icon={<Database size={48} className=\"text-komachi-inactive\" />}\n          title=\"No data available\"\n          description=\"There is no data to display.\"\n        />\n      </div>\n      <div>\n        <p className=\"mb-2 text-sm text-komachi-subtle\">Large</p>\n        <Empty\n          size=\"lg\"\n          icon={<Database size={64} className=\"text-komachi-inactive\" />}\n          title=\"No data available\"\n          description=\"There is no data to display.\"\n        />\n      </div>\n    </div>",
+        "<Empty\n      icon={<FolderOpen size={48} className=\"text-komachi-inactive\" />}\n      title=\"No projects found\"\n      description=\"Get started by creating your first project using the command below.\"\n      commandLine=\"npm create komachi-project\"\n    />",
+        "<Empty\n      icon={<CloudSlash size={48} className=\"text-komachi-inactive\" />}\n      title=\"No connection\"\n      description=\"Unable to connect to the server. Please check your connection and try again.\"\n      contents={\n        <div className=\"flex gap-2\">\n          <Button variant=\"primary\">Retry</Button>\n          <Button variant=\"secondary\">Go Back</Button>\n        </div>\n      }\n    />",
         "<Empty title=\"Nothing here\" />",
-        "<Empty\r\n      title=\"No results found\"\r\n      description=\"Try adjusting your search or filter to find what you're looking for.\"\r\n    />"
+        "<Empty\n      title=\"No results found\"\n      description=\"Try adjusting your search or filter to find what you're looking for.\"\n    />"
       ],
       "colors": [
         "bg-komachi-control",

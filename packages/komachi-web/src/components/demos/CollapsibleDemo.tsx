@@ -155,7 +155,7 @@ export function CollapsibleAccordionDemo() {
     {
       title: "How do I install it?",
       content:
-        "Run `npm install komachi` and import the components you need.",
+        "Run `npm install @swiftlylabs/komachi` and import the components you need.",
     },
     {
       title: "Is it accessible?",

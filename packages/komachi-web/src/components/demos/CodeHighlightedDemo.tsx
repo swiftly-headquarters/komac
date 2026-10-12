@@ -87,10 +87,10 @@ export function CodeHighlightedBashDemo() {
     <DemoProvider>
       <CodeHighlighted
         code={`# Install Komachi
-npm install komachi
+npm install @swiftlylabs/komachi
 
 # Or with pnpm
-pnpm add komachi
+pnpm add @swiftlylabs/komachi
 
 # Start development server
 pnpm dev`}
@@ -178,7 +178,7 @@ export function CodeHighlightedCopyButtonDemo() {
   return (
     <DemoProvider>
       <CodeHighlighted
-        code={`npm install komachi`}
+        code={`npm install @swiftlylabs/komachi`}
         lang="bash"
         showCopyButton
       />
