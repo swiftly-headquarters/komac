@@ -5,7 +5,7 @@ description: Understand the accessibility features Komachi provides and what you
 ---
 
 import Callout from "~/components/docs/Callout.astro";
-import { Input } from "komachi";
+import { InputWithLabelDemo } from "~/components/demos/InputDemo";
 
 Komachi treats accessibility as a core requirement. Its components sit on top of [Base UI](https://base-ui.com/react/overview/accessibility), which takes care of the hard parts: ARIA attributes, roles, pointer interactions, keyboard navigation, and focus management. You get an accessible experience by default, and simple APIs to adjust it.
 
@@ -40,10 +40,10 @@ Every foreground element you style needs enough contrast against its background.
 Components such as `Field`, `Input`, and `Checkbox` link form controls to their labels automatically. You can also pair a control with a native HTML `<label>` element.
 
 <div class="not-prose max-w-xs">
-  <Input label="Email address" placeholder="you@example.com" client:visible />
+  <InputWithLabelDemo client:visible />
 </div>
 
-Tab to the field above and a screen reader announces "Email address" - the `label` prop wires it up, no manual `id`/`htmlFor` pairing needed.
+Tab to the field above and a screen reader announces "Username" - the `label` prop wires it up, no manual `id`/`htmlFor` pairing needed.
 
 Custom controls need an accessible name from markup such as `alt`, `aria-label`, or `aria-labelledby`. [WAI-ARIA explains how to name custom controls](https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/).
 
