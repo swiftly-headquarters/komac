@@ -834,7 +834,7 @@ function ChoroplethMapRoot<T>(
       inRange: { color: colors },
       orient: "horizontal" as const,
       text: ["High", "Low"],
-      left: 0,
+      right: 0,
       bottom: 8,
       textStyle: {
         color: ChartPalette.text("primary", isDarkMode),
